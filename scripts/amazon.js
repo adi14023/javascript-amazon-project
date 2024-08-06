@@ -45,7 +45,7 @@ products.forEach((product) =>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">     
             Add to Cart
           </button>
         </div>
@@ -53,7 +53,33 @@ products.forEach((product) =>{
 
 });
 
-console.log(productsHTML);
+// data-product-name is a data attribute, data attributes in html need to start with data- then any name, and it has a value.
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+document.querySelectorAll('.js-add-to-cart')
+    .forEach((button) =>{
+        button.addEventListener('click',() =>{
+            const productId = button.dataset.productId; //dataset contains all the data attributes it gets converted from kebab case to camel case xx-xx to xxYy 
+
+            let matchingItem;
+
+            cart.forEach((item) =>{
+                if(productId === item.productId){
+                    matchingItem = item;
+                }
+            })
+
+            if(matchingItem){
+                matchingItem.quantity++;
+            } else {
+                cart.push({
+                    productId: productId,
+                    quantity: 1
+                });
+            }
+
+            console.log(cart);
+        });
+    });
 
